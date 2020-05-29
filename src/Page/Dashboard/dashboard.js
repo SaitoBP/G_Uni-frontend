@@ -5,9 +5,9 @@ import React from 'react';
 import DashboardTable from '../../Components/DashboardTable/DashboardTable';
 
 class Dashboard extends React.Component {
-    render() {
 
-        const os = [
+    state = {
+         os: [
             {
                 "osNumber": "001",
                 "companyName": "Empresa Teste 01",
@@ -29,10 +29,26 @@ class Dashboard extends React.Component {
                 "ppraStatus": "Em Adamento",
                 "pcmsoStatus": "Em Andamento",
             }
-        ];
+        ],
+    }
 
+    deleteOs = index => {
+
+        const {os} = this.state;
+
+        this.setState(
+            {
+                os : os.filter((os, pos) => {
+                    console.log(index, pos);
+                    return index !== pos;
+                }),
+            }
+        );
+    }
+
+    render() {
         return (
-            <DashboardTable os={os} />
+            <DashboardTable os={this.state.os} deleteOs={this.deleteOs}/>
         );
     }
 }
