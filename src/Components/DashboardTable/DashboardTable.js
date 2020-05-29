@@ -15,30 +15,36 @@ const TableHead = () => {
     );
 }
 
-const TableBody = () => {
+const TableBody = props => {
 
+    const rows = props.os.map((row, index) => {
+        return (
+            <tr>
+                <td>{row.osNumber}</td>
+                <td>{row.companyName}</td>
+                <td>{row.osStatus}</td>
+                <td>{row.ppraStatus}</td>
+                <td>{row.pcmsoStatus}</td>
+            </tr>
+        );
+    });
 
-
-    return(
-        
+    return (
+        <tbody>
+            {rowsf}
+        </tbody>
     );
 }
 
 class DashboardTable extends React.Component {
     render() {
+
+        const { os } = this.props;
+
         return (
             <table>
                 <TableHead />
-                <tr>
-                    <td>003</td>
-                    <td>Safework SST</td>
-                    <td>Em Andamento</td>
-                    <td>Finalizado</td>
-                    <td>Em Andamento</td>
-                </tr>
-                <tbody>
-
-                </tbody>
+                <TableBody os={os} />
             </table>
         );
     }

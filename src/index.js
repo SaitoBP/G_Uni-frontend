@@ -3,11 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Componentes:
-import DashboardTable from './Components/DashboardTable/DashboardTable';
+import Dashboard from './Page/Dashboard/dashboard';
 
 ReactDOM.render(
+  
   <React.StrictMode>
-    <DashboardTable />
+    <Dashboard />
   </React.StrictMode>,
   document.getElementById('root')
 );
