@@ -1,13 +1,16 @@
 // Libs
-import React from 'react';
+import React, { Fragment } from 'react';
+
+import 'materialize-css/dist/css/materialize.min.css'
 
 // Componentes
 import DashboardTable from '../../Components/DashboardTable/DashboardTable';
+import OsForm from '../../Components/OsForm/OsForm';
 
 class Dashboard extends React.Component {
 
     state = {
-         os: [
+        os: [
             {
                 "osNumber": "001",
                 "companyName": "Empresa Teste 01",
@@ -34,11 +37,11 @@ class Dashboard extends React.Component {
 
     deleteOs = index => {
 
-        const {os} = this.state;
+        const { os } = this.state;
 
         this.setState(
             {
-                os : os.filter((os, pos) => {
+                os: os.filter((os, pos) => {
                     console.log(index, pos);
                     return index !== pos;
                 }),
@@ -46,9 +49,16 @@ class Dashboard extends React.Component {
         );
     }
 
+    submitHandler = os => {
+        this.setState({ os: [...this.state.os, os] })
+    }
+
     render() {
         return (
-            <DashboardTable os={this.state.os} deleteOs={this.deleteOs}/>
+            <Fragment>
+                <DashboardTable os={this.state.os} deleteOs={this.deleteOs} />
+                <OsForm submitHandler={this.submitHandler}/>
+            </Fragment>
         );
     }
 }
