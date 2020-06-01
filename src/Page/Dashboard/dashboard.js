@@ -56,8 +56,11 @@ class Dashboard extends React.Component {
     render() {
         return (
             <Fragment>
-                <DashboardTable os={this.state.os} deleteOs={this.deleteOs} />
-                <OsForm submitHandler={this.submitHandler}/>
+                <h3>Foz do Iguaçu</h3>
+                <div className="container">
+                    <DashboardTable os={this.state.os} deleteOs={this.deleteOs} />
+                    <OsForm submitHandler={this.submitHandler} />
+                </div>
             </Fragment>
         );
     }

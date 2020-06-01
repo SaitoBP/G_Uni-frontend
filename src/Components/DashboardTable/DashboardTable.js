@@ -26,7 +26,7 @@ const TableBody = props => {
                 <td>{row.osStatus}</td>
                 <td>{row.ppraStatus}</td>
                 <td>{row.pcmsoStatus}</td>
-                <td><button onClick = {
+                <td><button className="waves-effect waves-light btn" onClick = {
                     () => {
                         props.deleteOs(index);
                     }
@@ -48,7 +48,7 @@ class DashboardTable extends React.Component {
         const { os, deleteOs } = this.props;
 
         return (
-            <table>
+            <table className="highlight">
                 <TableHead />
                 <TableBody os={os} deleteOs={deleteOs}/>
             </table>
