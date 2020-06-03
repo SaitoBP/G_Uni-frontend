@@ -7,10 +7,9 @@ const TableHead = () => {
             <tr>
                 <th>N° OS</th>
                 <th>Razão Social</th>
-                <th>OS</th>
-                <th>PPRA</th>
-                <th>PCMSO</th>
-                <th>REMOVER</th>
+                <th>Prazo</th>
+                <th>Numero de Vidas</th>
+                <th>Status</th>
             </tr>
         </thead>
     );
@@ -22,15 +21,10 @@ const TableBody = props => {
         return (
             <tr key={index}>
                 <td>{row.osNumber}</td>
-                <td>{row.companyName}</td>
+                <td>{row.company.companyName}</td>
                 <td>{row.osStatus}</td>
                 <td>{row.ppraStatus}</td>
                 <td>{row.pcmsoStatus}</td>
-                <td><button className="waves-effect waves-light btn" onClick = {
-                    () => {
-                        props.deleteOs(index);
-                    }
-                }>Remover</button></td>
             </tr>
         );
     });

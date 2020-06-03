@@ -1,14 +1,17 @@
-// Libs
+// React:
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Materialize
+import 'materialize-css/dist/css/materialize.min.css';
+
 // Componentes:
-import Dashboard from './Page/Dashboard/dashboard';
+import Routes from './Page/Routes';
 
 ReactDOM.render(
-  
-  <React.StrictMode>
-    <Dashboard />
-  </React.StrictMode>,
-  document.getElementById('root')
+
+    <React.StrictMode>
+        <Routes />
+    </React.StrictMode>,
+    document.getElementById('root')
 );
