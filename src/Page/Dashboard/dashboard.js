@@ -1,63 +1,91 @@
 // React:
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 
-// ApiService:
-import ApiService from '../../Services/Api/ApiService';
+// Material UI:
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
-// Componentes:
+// Components:
 import DashboardTable from '../../Components/DashboardTable/DashboardTable';
-import OsForm from '../../Components/OsForm/OsForm';
 
-class Dashboard extends React.Component {
+const drawerWidth = 240;
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      os: []
-    }
-  }
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerContainer: {
+    overflow: 'auto',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
 
-  deleteOs = index => {
+export default function ClippedDrawer() {
+  const classes = useStyles();
 
-    const { os } = this.state;
+  // Hook:
+  const [uo, setUo] = useState('');
 
-    this.setState(
-      {
-        os: os.filter((os, pos) => {
-          console.log(index, pos);
-          return index !== pos;
-        }),
-      }
-    );
-  }
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <Typography variant="h6" noWrap>
+            G-Uni
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-  submitHandler = os => {
-    this.setState({ os: [...this.state.os, os] })
-  }
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}>
 
-  componentDidMount() {
-
-    ApiService.listOs()
-      .then(response => {
-        this.setState({os: [...this.state.os, ...response.content]})
-      })
-
-  }
-
-  render() {
-
-    ApiService.listOs()
-      .then(response => console.log(response.content));
-
-    return (
-      <Fragment>
-        <div className="container">
-          <DashboardTable os={this.state.os} deleteOs={this.deleteOs} />
-          {/* <OsForm submitHandler={this.submitHandler} /> */}
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <Divider />
+          <List>
+            {['Ampere', 'Apucarana', 'Arapongas',
+              'Campo Mourrão', 'Cascavel', 'Cianorte',
+              'Dois Vizinhos', 'Foz do Iguaçu',
+              'Francisco Beltrão', 'Guarapuava',
+              'Irati', 'Londrina', 'Marechal C. Rondon',
+              'Palmas', 'Terra Roxa', 'Toledo', 'Umuarama'].map((text, index) => (
+                <ListItem button key={text} onClick={event => { setUo(text) }}>
+                  <ListItemText primary={text} />
+                </ListItem>
+              ))}
+          </List>
         </div>
-      </Fragment>
-    );
-  }
+      </Drawer>
+      <main className={classes.content}>
+        <Toolbar />
+        <DashboardTable uo={uo} />
+      </main>
+    </div>
+  );
 }
-
-export default Dashboard;

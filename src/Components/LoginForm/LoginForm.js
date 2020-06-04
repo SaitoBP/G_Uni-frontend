@@ -1,6 +1,11 @@
 // React:
 import React from 'react';
 
+// Material UI:
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 // Router:
 import { Redirect, withRouter } from 'react-router-dom';
 
@@ -61,21 +66,25 @@ class LoginForm extends React.Component {
     } else {
       return (
         <form method="post">
-          <label htmlFor="email">Email</label>
-          <input type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={this.inputHandle} />
+          <Grid container spacing={2} direction="column" justify="center" alignItems="center" style={{ height: '90vh' }}>
 
-          <label htmlFor="password">Senha</label>
-          <input type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={this.inputHandle} />
+            <Grid item>
+              <TextField id="email" label="Email" variant="outlined"
+                value={email} onChange={this.inputHandle} name="email" />
+            </Grid>
 
-          <button onClick={this.submitForm} type="button" className="waves-effect waves-light btn">Login</button>
+            <Grid item>
+              <TextField id="password" label="Senha" variant="outlined"
+                value={password} onChange={this.inputHandle} name="password" />
+            </Grid>
+
+            <Grid item>
+              <Button onClick={this.submitForm} type="button" variant="contained" color="primary">
+                Login
+              </Button>
+            </Grid>
+
+          </Grid>
         </form>
       )
     }

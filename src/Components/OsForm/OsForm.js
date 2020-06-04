@@ -1,72 +1,35 @@
-// Libs
+// React:
 import React from 'react';
 
-// Service
-import FormValidator from '../../Utils/FormValidator'
+// Material UI:
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-class OsForm extends React.Component {
+// Components:
+import Verify from './Steps/Verify';
 
-    constructor(props) {
-        super(props);
+export default function FormDialog() {
+  const [open, setOpen] = React.useState(false);
 
-        this.startState = {
-            osNumber: '',
-            companyName: '',
-            osStatus: '',
-            ppraStatus: '',
-            pcmsoStatus: '',
-        }
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-        this.validator = new FormValidator({
-            field: 'companyName',
-            method: 'isEmpty'
-        });
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-        this.state = this.startState;
-    }
+  return (
+    <div>
 
-    inputHandler = event => {
-        const { name, value } = event.target;
+      <IconButton onClick={handleClickOpen}>
+        <AddCircleIcon fontSize="large" />
+      </IconButton>
 
-        this.setState({
-            [name]: value
-        })
-    }
-
-    submitForm = () => {
-        if (this.validator.isValid(this.state)) {
-
-            // Caso o validador retorne verdadeiro, renderiza na tela
-            this.props.submitHandler(this.state);
-            this.setState(this.startState);
-        }
-    }
-
-    render() {
-
-        const { osNumber, companyName, osStatus, ppraStatus, pcmsoStatus } = this.state;
-
-        return (
-            <form>
-                <label htmlFor="osNumber">Numero da OS</label>
-                <input type="text" name="osNumber" id="osNumber" value={osNumber} onChange={this.inputHandler} />
-
-                <label htmlFor="companyName">Razão Social</label>
-                <input type="text" name="companyName" id="companyName" value={companyName} onChange={this.inputHandler} />
-
-                <label htmlFor="osStatus">OS Status</label>
-                <input type="text" name="osStatus" id="osStatus" value={osStatus} onChange={this.inputHandler} />
-
-                <label htmlFor="ppraStatus">PPRA Status</label>
-                <input type="text" name="ppraStatus" id="ppraStatus" value={ppraStatus} onChange={this.inputHandler} />
-
-                <label htmlFor="pcmsoStatus">PCMSO Status</label>
-                <input type="text" name="pcmsoStatus" id="pcmsoStatus" value={pcmsoStatus} onChange={this.inputHandler} />
-
-                <button type="button" onClick={this.submitForm}>Salvar</button>
-            </form>
-        );
-    }
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Verify close={handleClose}/>
+      </Dialog>
+    </div>
+  );
 }
-
-export default OsForm;
