@@ -19,9 +19,6 @@ import Paper from '@material-ui/core/Paper';
 // Components:
 import OsForm from '../../Components/OsForm/OsForm';
 
-// ApiService:
-import { tokenHeader } from '../../Services/Api/ApiService';
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -154,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable(props) {
 
 
-  const { uo } = props;
+  const { uo, osByUo } = props;
 
   const classes = useStyles();
 
@@ -164,22 +161,12 @@ export default function EnhancedTable(props) {
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Effects:
-  useEffect( () => {
-    async function fetchData() {
-      const response = await fetch("http://localhost:8080/os", { headers: tokenHeader });
-      const data = await response.json();
-      console.log(data.content);
-  
-      setRows(data.content);
-    }
-
-    fetchData();
-  }, []);
-
+  // Effect Hook:
+  useEffect(() => {
+    setRows(osByUo);
+  }, [osByUo])
 
   function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -241,7 +228,7 @@ export default function EnhancedTable(props) {
 
   if (uo === '') {
     return (
-      <h1>Selecione uma unidade</h1>
+      <></>
     )
   } else {
     return (
@@ -252,7 +239,7 @@ export default function EnhancedTable(props) {
             <Table
               className={classes.table}
               aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
+              size='medium'
               aria-label="enhanced table"
             >
               <EnhancedTableHead
@@ -289,7 +276,7 @@ export default function EnhancedTable(props) {
                     );
                   })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableRow style={{ height: (53) * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}

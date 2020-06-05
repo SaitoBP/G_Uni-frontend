@@ -1,5 +1,5 @@
 // React:
-import React, { useState } from 'react';
+import React from 'react';
 
 // Material UI
 import Button from '@material-ui/core/Button';
@@ -9,31 +9,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-// ApiService:
-import { tokenHeader } from '../../../Services/Api/ApiService';
-
 // Main:
 export default function Verify(props) {
 
-  // States:
-  const [cnpj, setCnpj] = useState('');
-
-  const handleCnpj = async () => {
-    const url = "http://localhost:8080/company/cnpj:" + cnpj;
-
-    console.log(cnpj)
-
-    const response = await fetch(url, {headers: tokenHeader});
-    const data = await response.json();
-
-    console.log(data);
-  }
-
-  const handleChange = e => {
-    setCnpj(e.target.value);
-  }
-
-  const { close } = props;
+  // Props:
+  const { handleCnpj, setCnpj, close } = props;
 
   return (
     <>
@@ -44,8 +24,8 @@ export default function Verify(props) {
           informações cadastradas.
         </DialogContentText>
 
-        <TextField autoFocus margin="dense" id="cnpj" label="CNPJ"
-          type="text" variant="outlined" fullWidth onChange={handleChange} />
+        <TextField autoFocus size={'small'} id="cnpj" label="CNPJ"
+          type="text" variant="outlined" fullWidth onChange={e => setCnpj(e.target.value)} />
 
       </DialogContent>
       <DialogActions>

@@ -12,9 +12,18 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem'
+
+// Icons:
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 // Components:
 import DashboardTable from '../../Components/DashboardTable/DashboardTable';
+
+// ApiService:
+import api from '../../Services/Api/ApiService';
 
 const drawerWidth = 240;
 
@@ -24,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+  },
+  title: {
+    flexGrow: 1
   },
   drawer: {
     width: drawerWidth,
@@ -44,17 +56,72 @@ const useStyles = makeStyles((theme) => ({
 export default function ClippedDrawer() {
   const classes = useStyles();
 
-  // Hook:
+  // State:
   const [uo, setUo] = useState('');
+  const [osByUo, setOsByUo] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const open = Boolean(anchorEl);
+
+  // Handle do menu de usuario:
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("TOKEN_KEY");
+    window.location.reload(false);
+  }
+
+  // Handle para buscar as OS's pela UO:
+  const handleUo = uo => {
+    api.getOsByUo(uo)
+      .then(response => {
+        setOsByUo(response);
+        setUo(uo);
+      })
+      .catch(error => { console.error(error) })
+  }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
+
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h5" noWrap className={classes.title}>
             G-Uni
           </Typography>
+          <IconButton
+            color="inherit"
+            aria-label="menu-appbar"
+            onClick={handleMenu}
+            edge="end"
+          >
+            <AccountCircle fontSize="large" />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleLogout}>Sair</MenuItem>
+          </Menu>
+
         </Toolbar>
       </AppBar>
 
@@ -70,12 +137,12 @@ export default function ClippedDrawer() {
           <Divider />
           <List>
             {['Ampere', 'Apucarana', 'Arapongas',
-              'Campo Mourrão', 'Cascavel', 'Cianorte',
+              'Campo Mourão', 'Cascavel', 'Cianorte',
               'Dois Vizinhos', 'Foz do Iguaçu',
               'Francisco Beltrão', 'Guarapuava',
               'Irati', 'Londrina', 'Marechal C. Rondon',
               'Palmas', 'Terra Roxa', 'Toledo', 'Umuarama'].map((text, index) => (
-                <ListItem button key={text} onClick={event => { setUo(text) }}>
+                <ListItem button key={text} onClick={() => { handleUo(text) }}>
                   <ListItemText primary={text} />
                 </ListItem>
               ))}
@@ -84,7 +151,7 @@ export default function ClippedDrawer() {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <DashboardTable uo={uo} />
+        <DashboardTable uo={uo} osByUo={osByUo} />
       </main>
     </div>
   );

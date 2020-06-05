@@ -1,5 +1,5 @@
 // React:
-import React from 'react';
+import React, { useState } from 'react';
 
 // Material UI:
 import TextField from '@material-ui/core/TextField';
@@ -7,88 +7,54 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 // Router:
-import { Redirect, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-class LoginForm extends React.Component {
+import api from '../../Services/Api/ApiService';
 
-  constructor(props) {
-    super(props);
+// Main Component:
+export default function LoginForm() {
 
-    // Deixa o estado inicial do form vazio
-    this.initialState = {
-      email: '',
-      password: '',
-      redirect: false
-    }
+  // States Hooks:
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    this.state = this.initialState;
+  // History Hook:
+  const history = useHistory();
 
+  const submitForm = async () => {
+
+    api.auth(email, password)
+      .then(response => {
+        // Seta o token o armazenamento interno do browser:
+        localStorage.setItem('TOKEN_KEY', `Bearer ${response}`)
+
+        if (localStorage.getItem('TOKEN_KEY') !== 'Bearer undefined') {
+          // Redireciona para a dashboard:
+          history.push('/dashboard')
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      });
   }
 
-  inputHandle = event => {
-    const { name, value } = event.target;
+  return (
+    <Grid container spacing={2} direction="column" justify="center" alignItems="center" style={{ height: '90vh' }}>
 
-    this.setState({
-      [name]: value
-    });
-  }
+      <Grid item>
+        <TextField id="email" label="Email" variant="outlined"
+          value={email} onChange={e => setEmail(e.target.value)} name="email" />
+      </Grid>
 
-  submitForm = () => {
+      <Grid item>
+        <TextField id="password" label="Senha" variant="outlined"
+          value={password} onChange={e => setPassword(e.target.value)} name="password" />
+      </Grid>
 
-    const options = {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password
-      }),
-    }
+      <Grid item>
+        <Button type="button" onClick={submitForm} variant="contained" color="primary">Login</Button>
+      </Grid>
 
-    fetch('http://localhost:8080/auth', options)
-      .then(response => response.json())
-      .then(response => localStorage.setItem("TOKEN_KEY", (response.token)))
-
-    // Zera o formulario
-    this.setState(this.initialState);
-
-    this.props.history.push("/dashboard")
-  }
-
-  render() {
-
-    const { email, password } = this.state;
-
-    if (this.state.redirect) {
-      return <Redirect to={{ pathname: "/" }} />
-    } else {
-      return (
-        <form method="post">
-          <Grid container spacing={2} direction="column" justify="center" alignItems="center" style={{ height: '90vh' }}>
-
-            <Grid item>
-              <TextField id="email" label="Email" variant="outlined"
-                value={email} onChange={this.inputHandle} name="email" />
-            </Grid>
-
-            <Grid item>
-              <TextField id="password" label="Senha" variant="outlined"
-                value={password} onChange={this.inputHandle} name="password" />
-            </Grid>
-
-            <Grid item>
-              <Button onClick={this.submitForm} type="button" variant="contained" color="primary">
-                Login
-              </Button>
-            </Grid>
-
-          </Grid>
-        </form>
-      )
-    }
-  }
+    </Grid>
+  )
 }
-
-export default withRouter(LoginForm);
