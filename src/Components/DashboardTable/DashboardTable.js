@@ -18,6 +18,10 @@ import Paper from '@material-ui/core/Paper';
 
 // Components:
 import OsForm from '../../Components/OsForm/OsForm';
+import OsDetailed from './OsDetailed/OsDetailed';
+
+// ApiService:
+import api from '../../Services/Api/ApiService';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -133,7 +137,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750,
+    minWidth: 550,
   },
   visuallyHidden: {
     border: 0,
@@ -150,18 +154,31 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
 
-
-  const { uo, osByUo } = props;
-
   const classes = useStyles();
 
-  // States:
+  // Props:  
+  const { uo, osByUo } = props;
+
+  // States Hooks:
   const [rows, setRows] = useState([]);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('calories');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openOs, setOpenOs] = useState(false);
+
+  const init = {
+    id: '',
+    osNumber: '',
+    osValidityDate: '',
+    company: {
+      companyName: ''
+    },
+    documents: []
+  }
+
+  const [osById, setOsById] = useState(init);
 
   // Effect Hook:
   useEffect(() => {
@@ -193,24 +210,14 @@ export default function EnhancedTable(props) {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
+  const handleClickOpenOs = id => {
+    api.getOsById(id)
+      .then(response => {
+        console.log(response)
+        setOsById(response);
+        setOpenOs(true)
+      })
+      .catch(error => console.error(error));
   };
 
   const handleChangePage = (event, newPage) => {
@@ -260,7 +267,7 @@ export default function EnhancedTable(props) {
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
+                        onClick={() => handleClickOpenOs(row.id)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -283,6 +290,7 @@ export default function EnhancedTable(props) {
               </TableBody>
             </Table>
           </TableContainer>
+
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -290,8 +298,11 @@ export default function EnhancedTable(props) {
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+            onChangeRowsPerPage={handleChangeRowsPerPage} />
+
+          <OsDetailed openOs={openOs} setOpenOs={setOpenOs}
+            osById={osById} setOsById={setOsById} />
+
         </Paper>
       </div>
     );

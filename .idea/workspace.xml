@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d4d0cf2d-f316-460c-a469-bbe1d039fae0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/DashboardTable/DashboardTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/DashboardTable/DashboardTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/OsForm/OsForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/OsForm/OsForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/OsForm/Steps/CompanyInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/OsForm/Steps/CompanyInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/OsForm/Steps/Verify.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/OsForm/Steps/Verify.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Services/Api/ApiService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Services/Api/ApiService.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1czvWAo7pgJUclCekj3OSWQUPLS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d4d0cf2d-f316-460c-a469-bbe1d039fae0" name="Default Changelist" comment="" />
+      <created>1591544272162</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591544272162</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="361" y="-716" key="com.intellij.ide.util.TipDialog" timestamp="1591544315924">
+      <screen x="-295" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="361" y="-716" key="com.intellij.ide.util.TipDialog/0.0.1366.728/-295.-1080.1920.1080@-295.-1080.1920.1080" timestamp="1591544315924" />
+  </component>
+</project>

@@ -1,7 +1,7 @@
 // React:
 import React from 'react';
 
-// Material UI
+// Material UI Core:
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -13,7 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 export default function Verify(props) {
 
   // Props:
-  const { handleCnpj, setCnpj, close } = props;
+  const { handleCnpj, setCompany, close, company } = props;
 
   return (
     <>
@@ -21,11 +21,14 @@ export default function Verify(props) {
       <DialogContent>
         <DialogContentText>
           Por favor, insira o CNPJ da empresa, caso ela ja exista no banco de dados, iremos puxar as ultimas
-          informações cadastradas.
+          informações cadastradas, caso seja uma empresa nova, apenas clique em proximo.
         </DialogContentText>
 
         <TextField autoFocus size={'small'} id="cnpj" label="CNPJ"
-          type="text" variant="outlined" fullWidth onChange={e => setCnpj(e.target.value)} />
+          type="text" value={company.cnpj} variant="outlined" fullWidth onChange={e => setCompany({
+            ...company,
+            cnpj: e.target.value
+          })} />
 
       </DialogContent>
       <DialogActions>
