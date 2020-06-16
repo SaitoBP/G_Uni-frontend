@@ -40,32 +40,20 @@ export default function OsDetailed(props) {
 
   // State Hook:
   const [editMode, setEditMode] = useState(false);
-  const [documentId, setDocumentId] = useState([]);
 
   // Função para fechar o Modal:
-  const handleClose = () => {setOpenOs(false)};
-
-  // Função para adicionar documentos ao 'State' 'osById':
-  const handleDocuments = () => {
-    const emptyDocument = {
-      id: '',
-      docType: '',
-      auxiliar: '',
-      attribuitionDate: '',
-      sendToValidationDate: '',
-      finishDate: ''
-    }
-    setOsById({
-      ...osById,
-      documents: [
-        ...osById.documents,
-        emptyDocument
-      ]
-    })
-  }
+  const handleClose = () => {
+    setOpenOs(false);
+  };
 
   // DialogActions Conditional:
   const DialogButtons = editMode => {
+
+    const save = () => {
+      api.updateOs(osById)
+        .then(response => setOsById(response))
+        .catch(error => console.error(error))
+    }
 
     if (!editMode) {
       return (
@@ -75,38 +63,35 @@ export default function OsDetailed(props) {
       return (
         <>
           <Button onClick={handleClose} color="primary">Fechar</Button>
-          <Button onClick={() => {
-            console.log(osById.documents);
-
-            osById.documents.forEach((document) => {
-              if (document.id === '') {
-                console.log('POST');
-                api.postDocument(document)
-                  .then(response => {
-                    console.log(response.id)
-                    setDocumentId([...documentId, response.id])
-                  })
-                  .catch(error => console.error(error));
-              } else {
-                console.log('PUT')
-              }
-            });
-          }} color="primary">Salvar</Button>
+          <Button onClick={save} color="primary">Salvar</Button>
         </>
       );
     }
   }
 
-  const DocumentForm = editMode => {
+  const DocumentForm = () => {
+
+    let docs = ['PPRA', 'PCMSO_PPPA', 'LAUDO'];
+
     if (editMode) {
-      return (
-        <>
-          <Grid item xs={12}>
-            <Button fullWidth color='primary' variant='outlined'
-              onClick={handleDocuments}>Adicionar Documento</Button>
+
+      const docButton = docs.map(doc => {
+        return (
+          <Grid key={doc} item xs={(12 / docs.length)}>
+            <Button fullWidth variant='contained' color='primary'
+              onClick={() => {
+                api.postDocument(doc, osById)
+                  .then(response => setOsById(response))
+                  .catch(error => console.error(error))
+              }}>
+              {'Adicionar ' + doc}
+            </Button>
           </Grid>
-        </>
-      )
+        )
+      })
+      return docButton
+    } else {
+      return <> </>
     }
   }
 
@@ -119,8 +104,7 @@ export default function OsDetailed(props) {
 
       <DialogContent>
 
-
-        <Grid container spacing={2} >
+        <Grid container spacing={2} justify='center'>
 
           <Grid item xs={12}>
             <DialogContentText>
@@ -170,7 +154,7 @@ export default function OsDetailed(props) {
             </DialogContentText>
           </Grid>
 
-          {DocumentForm(editMode)}
+          <DocumentForm />
 
           <Grid item xs={12}>
             <DocumentTable documents={osById.documents} setOsById={setOsById} editMode={editMode} osById={osById} />

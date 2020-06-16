@@ -197,36 +197,61 @@ const api = {
 
   },
 
-  postDocument: async (_document) => {
+  postDocument: async (_documentType, osById) => {
 
     let options = {
-      method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': getToken() },
     }
 
     const document_response = await fetch('http://localhost:8080/document', {
       ...options,
+      method: 'POST',
       body: JSON.stringify({
-        docType: _document.docType,
-        auxiliar: _document.auxiliar,
-        documentAttribuitionDate: _document.documentAttribuitionDate,
-        documentSendToValidationDate: _document.documentSendToValidationDate,
-        documentFinishDate: _document.documentFinishDate
+        docType: _documentType
       })
     });
     const document = await document_response.json();
-    return document;
+
+    let id = osById.documents.map(document => document.id);
+
+    const os_response = await fetch(`http://localhost:8080/os/id:${osById.id}`, {
+      ...options,
+      method: 'PUT',
+      body: JSON.stringify({
+        documentsId: [...id, document.id]
+      })
+    });
+    const os = await os_response.json()
+    return os;
   },
 
-  updateOs: async (_documentId, _osById) => {
-    
+  updateOs: async (_osById) => {
+
     let options = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': getToken() },
     }
 
-    const osById_response = await fetch(`http://localhost:8080/os/${_osById.id}`)
+    // Atualiza as informações dos documentos:
+    _osById.documents.forEach(async function (document) {
+      await fetch(`http://localhost:8080/document/id:${document.id}`, {
+        ...options,
+        body: JSON.stringify({
+          auxiliar: document.auxiliar
+        })
+      })
+    })
 
+    let id = _osById.documents.map(document => document.id);
+
+    const osById_response = await fetch(`http://localhost:8080/os/id:${_osById.id}`, {
+      ...options,
+      body: JSON.stringify({
+        documentsId: id
+      })
+    })
+    const osById = await osById_response.json();
+    return osById
   }
 
 }

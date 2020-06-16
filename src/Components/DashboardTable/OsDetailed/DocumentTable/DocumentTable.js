@@ -70,7 +70,7 @@ function DocumentTableBody(props) {
                 value={document.auxiliar} onChange={e => handleSetDocuments(e, index)} />
             </TableCell>
 
-            <TableCell align='center'>
+            {/* <TableCell align='center'>
               <TextField fullWidth type='date' variant='outlined' name='attribuitionDate'
                 size='small' label='Data de Atribuição' id={'attribuitionDateId: ' + index}
                 value={document.attribuitionDate} onChange={e => handleSetDocuments(e, index)}
@@ -89,7 +89,7 @@ function DocumentTableBody(props) {
                 size='small' label='Finalização' id={'finishDateId: ' + index}
                 value={document.finishDate} onChange={e => handleSetDocuments(e, index)}
                 InputLabelProps={{ shrink: true }} />
-            </TableCell>
+            </TableCell> */}
 
           </TableRow>
         ))}

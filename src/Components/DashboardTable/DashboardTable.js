@@ -171,6 +171,7 @@ export default function EnhancedTable(props) {
   const init = {
     id: '',
     osNumber: '',
+    auxiliar: '',
     osValidityDate: '',
     company: {
       companyName: ''
@@ -213,7 +214,7 @@ export default function EnhancedTable(props) {
   const handleClickOpenOs = id => {
     api.getOsById(id)
       .then(response => {
-        console.log(response)
+        // console.log(response)
         setOsById(response);
         setOpenOs(true)
       })
